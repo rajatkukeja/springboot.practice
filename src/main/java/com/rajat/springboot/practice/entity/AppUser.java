@@ -1,16 +1,18 @@
 package com.rajat.springboot.practice.entity;
 
-import javax.management.relation.Role;
-
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-public class Users extends BaseEntity {
+@Entity(name = "users")
+@Table(name = "users")
+public class AppUser extends BaseEntity {
 
 	@Id
 	@Column(name = "id")
@@ -31,18 +33,18 @@ public class Users extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "role_id")
-	private Role role;
+	private Roles roles;
 
-	public Users() {
+	public AppUser() {
 	}
 
-	public Users(long id, String name, String email, String passwordHash, String mobileNumber, Role role) {
+	public AppUser(long id, String name, String email, String passwordHash, String mobileNumber, Roles roles) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.passwordHash = passwordHash;
 		this.mobileNumber = mobileNumber;
-		this.role = role;
+		this.roles = roles;
 	}
 
 	public long getId() {
@@ -85,12 +87,12 @@ public class Users extends BaseEntity {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public Role getRole() {
-		return role;
+	public Roles getRoles() {
+		return roles;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoles(Roles roles) {
+		this.roles = roles;
 	}
 
 }

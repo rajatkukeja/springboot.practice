@@ -12,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import com.rajat.springboot.practice.entity.AppUser;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -21,12 +23,11 @@ public class JwtUtil {
 	@Value("${app.secret.key}")
 	private String key;
 
-
 	public String generateToken(Authentication authentication) {
 		String jwtToken = null;
 		SecretKey secreyKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
-		User user = (User) authentication.getPrincipal();
-		jwtToken = Jwts.builder().issuer("Rajat kukreja").subject("JWT Token").claim("username", user.getUsername())
+		String user = (String) authentication.getName();
+		jwtToken = Jwts.builder().issuer("Rajat kukreja").subject("JWT Token").claim("username", user)
 				.claim("role",
 						authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 								.collect(Collectors.joining(",")))

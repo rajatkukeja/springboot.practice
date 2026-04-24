@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rajat.springboot.practice.dto.BlogDto;
 import com.rajat.springboot.practice.entity.Blog;
@@ -18,6 +19,7 @@ import com.rajat.springboot.practice.repository.BlogRepository;
 import com.rajat.springboot.practice.service.BlogService;
 
 @Service
+@Transactional(readOnly = true)
 public class BlogServiceImpl implements BlogService {
 
 	private BlogRepository blogRepo;
@@ -28,8 +30,8 @@ public class BlogServiceImpl implements BlogService {
 
 	@Override
 	public List<BlogDto> getBlogList() {
-		List<BlogDto> blogDtoList= new ArrayList<>();
-		List<Blog> blogList = blogRepo.findAll();
+		List<BlogDto> blogDtoList = new ArrayList<>();
+		List<Blog> blogList = blogRepo.findBlogList();
 		blogDtoList = blogList.stream().map(blog -> EntityMapper.mapToBlogDto(blog)).collect(Collectors.toList());
 		return blogDtoList;
 	}
@@ -37,7 +39,7 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public boolean createPost(Blog blog) {
 		List<Comment> commentList = new ArrayList<>();
-		for(Comment comment : blog.getCommentList()) {
+		for (Comment comment : blog.getCommentList()) {
 			comment.setDescription(comment.getDescription());
 			comment.setBlog(blog);
 			commentList.add(comment);
@@ -49,9 +51,17 @@ public class BlogServiceImpl implements BlogService {
 
 	@Override
 	public Page<Blog> getPaginationAndSortedBlog(int pageNo, int pageSize, String fieldName) {
-		PageRequest pageRequest = PageRequest.of(pageNo, pageSize , Sort.by(Order.asc(fieldName)));
+		PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(Order.asc(fieldName)));
 		Page<Blog> page = blogRepo.findAll(pageRequest);
 		return page;
+	}
+
+	@Override
+	public boolean deleteById(int id) {
+		boolean isSuccess = false;
+		blogRepo.deleteById(id);
+		isSuccess = true;
+		return isSuccess;
 	}
 
 }

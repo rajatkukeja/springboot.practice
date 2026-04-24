@@ -15,4 +15,6 @@ public interface BlogService {
 
 	Page<Blog> getPaginationAndSortedBlog(int pageNo, int pageSize, String fieldName);
 
+	boolean deleteById(int id);
+
 }

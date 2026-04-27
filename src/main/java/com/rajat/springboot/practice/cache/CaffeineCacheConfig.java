@@ -17,6 +17,7 @@ public class CaffeineCacheConfig {
 
 	@Bean
 	public CacheManager caffeineCacheManager() {
+
 		CaffeineCache blogCache = new CaffeineCache("blogList",
 				Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).maximumSize(5000).build());
 
@@ -26,5 +27,4 @@ public class CaffeineCacheConfig {
 		manager.setCaches(list);
 		return manager;
 	}
-
 }

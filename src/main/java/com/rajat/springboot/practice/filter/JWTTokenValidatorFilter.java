@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,11 +23,17 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
+	
+//	@Autowired
+//	private AppProps appProps;
+	
+//	@Autowired
+//	private Environment env;
 
 	public static final String JWT_HEADER = "Authorization";
 
-	@Value("${app.secret.key}")
-	private String key;
+//	@Value("${app.secret.key}")
+//	private String appKey;
 
 
 	@Override

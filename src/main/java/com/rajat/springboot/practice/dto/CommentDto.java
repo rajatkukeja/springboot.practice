@@ -1,6 +1,5 @@
 package com.rajat.springboot.practice.dto;
 
-import com.rajat.springboot.practice.entity.Blog;
 
 public class CommentDto {
 
@@ -8,15 +7,13 @@ public class CommentDto {
 
 	private String description;
 
-	private Blog blog;
 
 	public CommentDto() {
 	}
 
-	public CommentDto(int commentId, String description, Blog blog) {
+	public CommentDto(int commentId, String description) {
 		this.commentId = commentId;
 		this.description = description;
-		this.blog = blog;
 	}
 
 	public int getCommentId() {
@@ -35,12 +32,5 @@ public class CommentDto {
 		this.description = description;
 	}
 
-	public Blog getBlog() {
-		return blog;
-	}
-
-	public void setBlog(Blog blog) {
-		this.blog = blog;
-	}
 
 }

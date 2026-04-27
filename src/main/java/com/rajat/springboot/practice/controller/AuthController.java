@@ -61,7 +61,7 @@ public class AuthController {
 		CompromisedPasswordDecision decision = checker.check(registerRequestDto.getPassword());
 		if (decision.isCompromised()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(Map.of("Password", "Please use stringt password"));
+					.body(Map.of("Password", "Please use complex password"));
 		}
 
 		// Fetching App Users from the DB with the help of email and mobile number

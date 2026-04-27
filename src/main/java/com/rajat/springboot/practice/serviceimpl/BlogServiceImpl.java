@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,14 +30,17 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
+	@Cacheable("blogList")
 	public List<BlogDto> getBlogList() {
 		List<BlogDto> blogDtoList = new ArrayList<>();
 		List<Blog> blogList = blogRepo.findBlogList();
+		blogList.forEach(b -> b.getCommentList().size());
 		blogDtoList = blogList.stream().map(blog -> EntityMapper.mapToBlogDto(blog)).collect(Collectors.toList());
 		return blogDtoList;
 	}
 
 	@Override
+	@Transactional
 	public boolean createPost(Blog blog) {
 		List<Comment> commentList = new ArrayList<>();
 		for (Comment comment : blog.getCommentList()) {

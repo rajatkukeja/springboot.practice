@@ -2,7 +2,6 @@ package com.rajat.springboot.practice.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.rajat.springboot.practice.entity.Comment;
 
 public class BlogDto {
 
@@ -12,12 +11,12 @@ public class BlogDto {
 
 	private String blogDescription;
 
-	private List<Comment> commentList = new ArrayList<>();
+	private List<CommentDto> commentList = new ArrayList<>();
 
 	public BlogDto() {
 	}
 
-	public BlogDto(int blogId, String blogName, String blogDescription, List<Comment> commentList) {
+	public BlogDto(int blogId, String blogName, String blogDescription, List<CommentDto> commentList) {
 		this.blogId = blogId;
 		this.blogName = blogName;
 		this.blogDescription = blogDescription;
@@ -48,12 +47,14 @@ public class BlogDto {
 		this.blogDescription = blogDescription;
 	}
 
-	public List<Comment> getCommentList() {
+	public List<CommentDto> getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comment> commentList) {
+	public void setCommentList(List<CommentDto> commentList) {
 		this.commentList = commentList;
 	}
+
+	
 
 }

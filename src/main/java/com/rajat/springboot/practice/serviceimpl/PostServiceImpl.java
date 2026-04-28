@@ -29,12 +29,11 @@ public class PostServiceImpl {
 				.body(new ParameterizedTypeReference<>() {
 				});
 	}
-	public PostDto create() {
+	public PostDto create(PostDto postDto) {
 		return restClient.post().uri("/posts")
+				.body(postDto)
 				.retrieve()
-				.onStatus(HttpStatusCode::isError, (req, res) -> new IllegalArgumentException("Failed to create the post"))
-				.body(new ParameterizedTypeReference<>() {
-				});
+				.body(PostDto.class);
 	}
 
 }

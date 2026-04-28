@@ -9,6 +9,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,10 +21,20 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 @Component
+@PropertySource(value = "classpath:application-jwt.properties")
 public class JwtUtil {
 	
 	@Autowired
 	private AppProps appProps;
+
+	@Value("${jwt.token.issuer}")
+	private String issuer;
+	
+	@Value("${jwt.token.subject}")
+	private String subject;
+	
+	@Value("${jwt.token.expiration.hours}")
+	private int expHours;
 	
 //	private Environment env;
 
@@ -37,11 +48,11 @@ public class JwtUtil {
 		String jwtToken = null;
 		SecretKey secreyKey = Keys.hmacShaKeyFor(appProps.getKey().getBytes(StandardCharsets.UTF_8));
 		String user = (String) authentication.getName();
-		jwtToken = Jwts.builder().issuer("Rajat kukreja").subject("JWT Token").claim("username", user)
+		jwtToken = Jwts.builder().issuer(issuer).subject(subject).claim("username", user)
 				.claim("role",
 						authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 								.collect(Collectors.joining(",")))
-				.issuedAt(new Date()).expiration(new Date(new Date().getTime() + 24 * 60 * 60 * 1000))
+				.issuedAt(new Date()).expiration(new Date(new Date().getTime() + expHours * 60 * 60 * 1000))
 				.signWith(secreyKey).compact();
 		return jwtToken;
 

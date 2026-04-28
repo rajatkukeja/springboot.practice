@@ -25,9 +25,9 @@ public class AppSecurityConfig {
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
 		http.csrf(csrfConfigur -> csrfConfigur.disable()).authorizeHttpRequests(
-				(requests) -> requests.requestMatchers(HttpMethod.GET, "/api/**", "/logging/public").permitAll()
+				(requests) -> requests.requestMatchers(HttpMethod.GET, "/api/**", "/logging/public" , "/actuator/**" , "/callexternalapis/**").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register" , "/actuator/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/**").authenticated());
 		http.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class);
 		http.formLogin(withDefaults());
